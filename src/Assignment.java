@@ -11,7 +11,7 @@ public class Assignment {
      */
     public static final String REGISTER_NEW_DOG_METHOD = "registerNewDog"; // U7.1
     public static final String LIST_DOGS_METHOD = "listDogs"; // U7.2 och U8.4
-    public static final String FIND_DOG_METHOD = ""; // U7.3 - hjälpmetod tänkt att användas i de följande stegen
+    public static final String FIND_DOG_METHOD = "findDog"; // U7.3 - hjälpmetod tänkt att användas i de följande stegen
     public static final String INCREASE_AGE_METHOD = ""; // U7.4
     public static final String REMOVE_DOG_METHOD = ""; // U7.5, U8.6 och U9.6
     public static final String SORT_DOGS_METHOD = ""; // U7.6
@@ -35,16 +35,15 @@ public class Assignment {
      * metod.
      ********************************************************************************/
 
-    // private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     private ArrayList<Dog> dogList = new ArrayList<>();
 
     public void registerNewDog() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Name?> ");
-        String name = scanner.nextLine();
+        String name = scanner.next();
         System.out.print("Breed?> ");
-        String breed = scanner.nextLine();
+        String breed = scanner.next();
         System.out.print("Age?> ");
         int age = scanner.nextInt();
         System.out.print("Weight?> ");
@@ -54,11 +53,9 @@ public class Assignment {
         this.dogList.add(dog);
 
         System.out.println(name + " added to the register");
-        scanner.close();
     }
 
     public void listDogs() {
-        Scanner scanner = new Scanner(System.in);
         if (this.dogList.isEmpty()) {
             System.out.println("Error: no dogs in register");
         } else {
@@ -78,20 +75,15 @@ public class Assignment {
                 System.out.println("No dogs fit this criteria.");
             }
         }
-        scanner.close();
     }
 
-    public void findDog() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Find a dog by typing its name > ");
-        // query rätt namn?
-        String searchQuery = scanner.nextLine();
+    public Dog findDog(String searchQuery) {
         for (Dog dog : dogList) {
-            if (dog.getName() == searchQuery) {
-                System.out.println(dog);
+            if (dog.getName().equals(searchQuery)) {
+                return dog;
             }
         }
-        scanner.close();
+        return null;
     }
 
     /*

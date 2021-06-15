@@ -8,8 +8,8 @@ public class App {
         Assignment assignment = new Assignment();
 
         assignment.registerNewDog();
+        assignment.registerNewDog();
+        assignment.listDogs();
         assignment.findDog();
-        // assignment.registerNewDog();
-        // assignment.listDogs();
     }
 }
