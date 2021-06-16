@@ -12,22 +12,24 @@ public class Assignment {
     public static final String REGISTER_NEW_DOG_METHOD = "registerNewDog"; // U7.1
     public static final String LIST_DOGS_METHOD = "listDogs"; // U7.2 och U8.4
     public static final String FIND_DOG_METHOD = "findDog"; // U7.3 - hjälpmetod tänkt att användas i de följande stegen
-    public static final String INCREASE_AGE_METHOD = ""; // U7.4
-    public static final String REMOVE_DOG_METHOD = ""; // U7.5, U8.6 och U9.6
-    public static final String SORT_DOGS_METHOD = ""; // U7.6
-    public static final String REGISTER_NEW_OWNER_METHOD = ""; // U8.1
-    public static final String FIND_OWNER_METHOD = ""; // U8.2 - hjälpmetod tänkt att användas i de följande stegen
-    public static final String GIVE_DOG_METHOD = ""; // U8.3 och framåt
-    public static final String LIST_OWNERS_METHOD = ""; // U8.4
-    public static final String OWNER_OF_DOG_METHOD = ""; // U8.5, obs! metoden ska ligga i Owner-klassen
-    public static final String REMOVE_OWNER_METHOD = ""; // U8.7 och U9.6
-    public static final String START_AUCTION_METHOD = ""; // U9.1 och framåt
-    public static final String FIND_AUCTION_METHOD = ""; // U9.2 - hjälpmetod tänkt att användas i de följande
+    public static final String INCREASE_AGE_METHOD = "increaseAge"; // U7.4
+    public static final String REMOVE_DOG_METHOD = "removeDog"; // U7.5, U8.6 och U9.6
+    public static final String SORT_DOGS_METHOD = "sortDogs"; // U7.6
+    public static final String REGISTER_NEW_OWNER_METHOD = "registerNewOwner"; // U8.1
+    public static final String FIND_OWNER_METHOD = "findOwner"; // U8.2 - hjälpmetod tänkt att användas i de följande
+                                                                // stegen
+    public static final String GIVE_DOG_METHOD = "giveDog"; // U8.3 och framåt
+    public static final String LIST_OWNERS_METHOD = "listOwners"; // U8.4
+    public static final String OWNER_OF_DOG_METHOD = "getOwner"; // U8.5, obs! metoden ska ligga i Owner-klassen
+    public static final String REMOVE_OWNER_METHOD = "removeOwner"; // U8.7 och U9.6
+    public static final String START_AUCTION_METHOD = "startAuction"; // U9.1 och framåt
+    public static final String FIND_AUCTION_METHOD = "findAuction"; // U9.2 - hjälpmetod tänkt att användas i de
+                                                                    // följande
     // stegen
-    public static final String MAKE_BID_METHOD = ""; // U9.3 och framåt
-    public static final String LIST_BIDS_METHOD = ""; // U9.4 och framåt
-    public static final String LIST_AUCTIONS_METHOD = ""; // U9.5 och framåt
-    public static final String CLOSE_AUCTION_METHOD = ""; // U9.6
+    public static final String MAKE_BID_METHOD = "makeBid"; // U9.3 och framåt
+    public static final String LIST_BIDS_METHOD = "listBids"; // U9.4 och framåt
+    public static final String LIST_AUCTIONS_METHOD = "listAuctions"; // U9.5 och framåt
+    public static final String CLOSE_AUCTION_METHOD = "closeAuction"; // U9.6
 
     /********************************************************************************
      * Här nedanför skriver du dina metoder. Du kommer att kunna lämna in samma
@@ -35,19 +37,21 @@ public class Assignment {
      * metod.
      ********************************************************************************/
 
-    private Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
 
     private ArrayList<Dog> dogList = new ArrayList<>();
 
     public void registerNewDog() {
         System.out.print("Name?> ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.print("Breed?> ");
-        String breed = scanner.next();
+        String breed = scanner.nextLine();
         System.out.print("Age?> ");
         int age = scanner.nextInt();
+        scanner.nextLine();
         System.out.print("Weight?> ");
         int weight = scanner.nextInt();
+        scanner.nextLine();
 
         Dog dog = new Dog(name, breed, age, weight);
         this.dogList.add(dog);
@@ -61,6 +65,7 @@ public class Assignment {
         } else {
             System.out.print("Shortest tail length to display?> ");
             double minTailLength = scanner.nextDouble();
+            scanner.nextLine();
             int count = 0;
 
             for (Dog dog : dogList) {
@@ -79,11 +84,70 @@ public class Assignment {
 
     public Dog findDog(String searchQuery) {
         for (Dog dog : dogList) {
-            if (dog.getName().equals(searchQuery)) {
+            if (dog.getName().toLowerCase().equals(searchQuery.toLowerCase())) {
                 return dog;
             }
         }
         return null;
+    }
+
+    public void increaseAge() {
+        System.out.print("Which dog should have its age increased?> ");
+        String searchQuery = scanner.nextLine();
+        Dog dog = findDog(searchQuery);
+        if (dog == null) {
+            System.out.println("Error: No dog was found.");
+            return;
+        }
+        dog.updateAge(1);
+
+        System.out.println(dog.getName() + "'s age has been increased.");
+
+    }
+
+    public void removeDog() {
+        System.out.print("Which dog should be removed?> ");
+        String searchQuery = scanner.nextLine();
+        Dog dog = findDog(searchQuery);
+        if (dog == null) {
+            System.out.println("Error: No dog was found.");
+            return;
+        }
+        dogList.remove(dog);
+        System.out.println(dog.getName() + " has been removed.");
+    }
+
+    /*
+     * Sorteringsalgoritmen är bubble sort -
+     * https://www.bbc.co.uk/bitesize/guides/z22wwmn/revision/3 Metoden sortDogs går
+     * igenom listan av hundar och jämför två i taget med hjälp av
+     * compareDogs-metoden. Om den första är större än den andra byter så byter de
+     * plats. Om de är lika stora jämförs namnen. Även här byter de plats om den
+     * första kommer efter den andra i alfabetisk ordning. När alla har jämförts
+     * startar processen om, så länge några har bytit plats.
+     */
+
+    public void sortDogs() {
+        boolean hasSwapped = true;
+        while (hasSwapped) {
+            hasSwapped = false;
+            for (int i = 0; i < dogList.size() - 1; i++) {
+                if (compareDogs(dogList.get(i), dogList.get(i + 1))) {
+                    Collections.swap(dogList, i, i + 1);
+                    hasSwapped = true;
+                }
+            }
+        }
+    }
+
+    private boolean compareDogs(Dog dogA, Dog dogB) {
+        if (dogA.getTailLength() < dogB.getTailLength()) {
+            return false;
+        } else if (dogA.getTailLength() > dogB.getTailLength()) {
+            return true;
+        } else {
+            return dogA.getName().compareTo(dogB.getName()) > 0;
+        }
     }
 
     /*
@@ -104,7 +168,7 @@ public class Assignment {
      * Behövs från U7.5, eventuellt tidigare
      */
     public void waitForUserInput() {
-        // NAMNPÅSCANNER.nextLine() eller motsvarande anrop på din egen klass
+        scanner.nextLine();
     }
 
     /*
