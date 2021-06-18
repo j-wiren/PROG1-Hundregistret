@@ -10,6 +10,7 @@ public class Dog {
     private String breed;
     private int age;
     private int weight;
+    private Owner owner;
 
     public Dog(String name, String breed, int age, int weight) {
         this.name = name;
@@ -45,6 +46,16 @@ public class Dog {
         }
 
         return tailLength;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void assignOwner(Owner o) {
+        owner = o;
+
+        o.addDog(this);
     }
 
     public int updateAge(int newAge) {

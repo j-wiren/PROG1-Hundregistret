@@ -18,7 +18,7 @@ public class Assignment {
     public static final String REGISTER_NEW_OWNER_METHOD = "registerNewOwner"; // U8.1
     public static final String FIND_OWNER_METHOD = "findOwner"; // U8.2 - hjälpmetod tänkt att användas i de följande
                                                                 // stegen
-    public static final String GIVE_DOG_METHOD = "giveDog"; // U8.3 och framåt
+    public static final String GIVE_DOG_METHOD = "assignDog"; // U8.3 och framåt
     public static final String LIST_OWNERS_METHOD = "listOwners"; // U8.4
     public static final String OWNER_OF_DOG_METHOD = "getOwner"; // U8.5, obs! metoden ska ligga i Owner-klassen
     public static final String REMOVE_OWNER_METHOD = "removeOwner"; // U8.7 och U9.6
@@ -40,6 +40,8 @@ public class Assignment {
     private static Scanner scanner = new Scanner(System.in);
 
     private ArrayList<Dog> dogList = new ArrayList<>();
+
+    private ArrayList<Owner> ownerList = new ArrayList<>();
 
     public void registerNewDog() {
         System.out.print("Name?> ");
@@ -150,6 +152,51 @@ public class Assignment {
         }
     }
 
+    public void registerNewOwner() {
+        System.out.print("Name?> ");
+        String name = scanner.nextLine();
+
+        Owner owner = new Owner(name);
+        this.ownerList.add(owner);
+    }
+
+    public Owner findOwner(String searchQuery) {
+        for (Owner owner : ownerList) {
+            if (owner.getName().toLowerCase().equals(searchQuery.toLowerCase())) {
+                return owner;
+            }
+        }
+        return null;
+    }
+
+    public void assignDog() {
+        System.out.print("Enter the dog's name?> ");
+        String dogName = scanner.nextLine();
+        Dog foundDog = findDog(dogName);
+
+        if (foundDog == null) {
+            System.out.println("Error: No dog was found.");
+            return;
+        }
+
+        if (foundDog.getOwner() != null) {
+            System.out.println("Error: " + foundDog.getName() + " already has an owner.");
+            return;
+        }
+
+        System.out.print("Enter the owner's name?> ");
+        String ownerName = scanner.nextLine();
+        Owner foundOwner = findOwner(ownerName);
+
+        if (foundOwner == null) {
+            System.out.println("Error: No owner was found.");
+            return;
+        }
+
+        foundDog.assignOwner(foundOwner);
+        // foundOwner.addDog(foundDog);
+    }
+
     /*
      * Metoderna nedan är till för att testprogrammet ska sätta upp och kontrollera
      * olika saker. De är INTE tänkta att användas i din egen kod. Du måste fylla i
@@ -211,9 +258,9 @@ public class Assignment {
      * 
      * Behövs från U8.2
      */
-    // public void addOwner(Owner o) {
-    // // NAMNPÅLISTAN.add(o); eller motsvarande anrop
-    // }
+    public void addOwner(Owner o) {
+        ownerList.add(o);
+    }
 
     /*
      * Byt ut koden i nedanstående metod så att ägaren läggs in i listan av ägare.
@@ -226,9 +273,9 @@ public class Assignment {
      * 
      * Behövs från U8.1
      */
-    // public Collection<Owner> getOwners() {
-    // // return NAMNPÅSAMLINGEN; eller motsvarande anrop
-    // }
+    public List<Owner> getOwners() {
+        return ownerList;
+    }
 
     /*
      * Om du använder en array för att spara ägarna kan nedanstående variant
