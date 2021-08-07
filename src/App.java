@@ -7,21 +7,17 @@ public class App {
 
         Assignment assignment = new Assignment();
 
-        /*
-         * Dog dog1 = new Dog("Leo", "Pudel", 4, 6); Dog dog2 = new Dog("Roffe",
-         * "Bulldog", 8, 10);
-         * 
-         * Owner owner1 = new Owner("Joakim"); Owner owner2 = new Owner("Pelle");
-         */
+        Dog dog1 = new Dog("Leo", "Pudel", 4, 6);
+        Dog dog2 = new Dog("Roffe", "Bulldog", 8, 10);
 
-        assignment.registerNewDog();
-        assignment.registerNewDog();
-        assignment.registerNewDog();
-        assignment.registerNewOwner();
-        assignment.registerNewOwner();
-        assignment.assignDog();
-        assignment.assignDog();
-        assignment.assignDog();
+        Owner owner1 = new Owner("Joakim");
+        Owner owner2 = new Owner("Pelle");
 
+        assignment.addDog(dog1);
+        assignment.addDog(dog2);
+
+        assignment.startAuction();
+        assignment.startAuction();
+        assignment.startAuction();
     }
 }

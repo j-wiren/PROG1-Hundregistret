@@ -20,7 +20,8 @@ public class Assignment {
                                                                 // stegen
     public static final String GIVE_DOG_METHOD = "assignDog"; // U8.3 och framåt
     public static final String LIST_OWNERS_METHOD = "listOwners"; // U8.4
-    public static final String OWNER_OF_DOG_METHOD = "getOwner"; // U8.5, obs! metoden ska ligga i Owner-klassen
+    public static final String OWNER_OF_DOG_METHOD = "checkIfOwnerOwnsDog"; // U8.5, obs! metoden ska ligga i
+                                                                            // Owner-klassen
     public static final String REMOVE_OWNER_METHOD = "removeOwner"; // U8.7 och U9.6
     public static final String START_AUCTION_METHOD = "startAuction"; // U9.1 och framåt
     public static final String FIND_AUCTION_METHOD = "findAuction"; // U9.2 - hjälpmetod tänkt att användas i de
@@ -42,6 +43,10 @@ public class Assignment {
     private ArrayList<Dog> dogList = new ArrayList<>();
 
     private ArrayList<Owner> ownerList = new ArrayList<>();
+
+    private ArrayList<Auction> auctionList = new ArrayList<>();
+
+    private int idCounter = 1;
 
     public void registerNewDog() {
         System.out.print("Name?> ");
@@ -116,7 +121,30 @@ public class Assignment {
             return;
         }
         dogList.remove(dog);
-        System.out.println(dog.getName() + " has been removed.");
+        if (dog.getOwner() != null) {
+            dog.getOwner().removeDog(dog);
+        }
+        System.out.println(dog.getName() + " has been removed from the register");
+    }
+
+    public void removeOwner() {
+        System.out.print("Which owner should be removed?> ");
+        String searchQuery = scanner.nextLine();
+        Owner owner = findOwner(searchQuery);
+        if (owner == null) {
+            System.out.println("Error: No owner was found.");
+        } else {
+            ownerList.remove(owner);
+
+            if (owner.getDogs() != null) {
+                for (Dog dog : owner.getDogs()) {
+                    dogList.remove(dog);
+                }
+                owner.removeAllDogs();
+            }
+
+            System.out.println(owner.getName() + " has been removed from the register");
+        }
     }
 
     /*
@@ -193,8 +221,61 @@ public class Assignment {
             return;
         }
 
-        foundDog.assignOwner(foundOwner);
-        // foundOwner.addDog(foundDog);
+        foundOwner.addDog(foundDog);
+    }
+
+    public void listOwners() {
+        if (ownerList.isEmpty()) {
+            System.out.println("Error: There are no owners in the register");
+        } else {
+            for (Owner owner : ownerList) {
+                if (owner.getDogs() == null) {
+                    System.out.println(owner.getName() + " []");
+                } else {
+                    ArrayList<String> ownersDogs = new ArrayList<>();
+                    for (Dog dog : owner.getDogs()) {
+                        ownersDogs.add(dog.getName());
+                    }
+                    System.out.println(owner.getName() + " " + ownersDogs);
+                }
+            }
+        }
+    }
+
+    public void startAuction() {
+        System.out.print("Enter the dog's name?> ");
+        String dogName = scanner.nextLine();
+        Dog foundDog = findDog(dogName);
+
+        if (foundDog == null) {
+            System.out.println("Error: No dog was found.");
+            return;
+        }
+
+        if (foundDog.getOwner() != null) {
+            System.out.println("Error: " + foundDog.getName() + " already has an owner.");
+            return;
+        }
+
+        if (findAuction(foundDog) != null) {
+            System.out.println("Error: " + foundDog.getName() + " is already up for auction.");
+            return;
+        }
+
+        Auction auction = new Auction(foundDog, idCounter++);
+        auctionList.add(auction);
+
+        System.out.println(foundDog.getName() + " has been put up for auction in auction #" + auction.getID() + ".");
+
+    }
+
+    private Dog findAuction(Dog dog) {
+        for (Auction auction : auctionList) {
+            if (auction.getDog() == dog) {
+                return dog;
+            }
+        }
+        return null;
     }
 
     /*
@@ -214,6 +295,7 @@ public class Assignment {
      * 
      * Behövs från U7.5, eventuellt tidigare
      */
+
     public void waitForUserInput() {
         scanner.nextLine();
     }

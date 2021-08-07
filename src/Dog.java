@@ -55,12 +55,25 @@ public class Dog {
     public void assignOwner(Owner o) {
         owner = o;
 
-        o.addDog(this);
+        boolean dogFound = false;
+
+        // kollar om ägaren redan har hunden
+        if (o.getDogs() != null) {
+            for (Dog dog : o.getDogs()) {
+                if (dog == this) {
+                    dogFound = true;
+                }
+            }
+        }
+
+        if (!dogFound) {
+            o.addDog(this);
+        }
     }
 
     public int updateAge(int newAge) {
         if (newAge < 0) {
-            System.out.println("Den uppdaterade åldern är mindre än den nuvarande.");
+            System.out.println("Error: The given age is lower than the current.");
             return this.age;
         } else {
             this.age += newAge;
@@ -69,7 +82,12 @@ public class Dog {
     }
 
     public String toString() {
-        return "- " + this.name + " (" + this.breed + ", " + this.age + " years, " + this.weight + " kg, "
-                + getTailLength() + " cm tail)";
+        if (this.getOwner() != null) {
+            return "- " + this.name + " (" + this.breed + ", " + this.age + " years, " + this.weight + " kg, "
+                    + getTailLength() + " cm tail, owned by " + this.getOwner().getName() + ")";
+        } else {
+            return "- " + this.name + " (" + this.breed + ", " + this.age + " years, " + this.weight + " kg, "
+                    + getTailLength() + " cm tail)";
+        }
     }
 }
