@@ -11,13 +11,17 @@ public class App {
         Dog dog2 = new Dog("Roffe", "Bulldog", 8, 10);
 
         Owner owner1 = new Owner("Joakim");
-        // Owner owner2 = new Owner("Pelle");
+        Owner owner2 = new Owner("Pelle");
 
         assignment.addDog(dog1);
         assignment.addDog(dog2);
         assignment.addOwner(owner1);
+        assignment.addOwner(owner2);
 
         assignment.startAuction();
         assignment.makeBid();
+        assignment.makeBid();
+        assignment.makeBid();
+        assignment.listBids();
     }
 }

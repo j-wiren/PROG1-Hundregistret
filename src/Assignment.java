@@ -321,10 +321,24 @@ public class Assignment {
             System.out.println("Error: Your bid is too low.");
             return;
         }
-        foundAuction.makeBid(foundOwner, bid);
+        foundAuction.makeBid(foundOwner, new Bid(foundOwner, bid));
 
         System.out.println("Your bid has been made.");
 
+    }
+
+    public void listBids() {
+        Dog foundDog = inputDog();
+        if (foundDog == null) {
+            return;
+        }
+        Auction foundAuction = findAuction(foundDog);
+        if (foundAuction == null) {
+            System.out.println("Error: " + foundDog.getName() + " is not up for auction.");
+            return;
+        }
+
+        foundAuction.listBids();
     }
 
     /*
