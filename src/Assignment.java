@@ -341,6 +341,16 @@ public class Assignment {
         foundAuction.listBids();
     }
 
+    public void listAuctions() {
+        if (auctionList.isEmpty()) {
+            System.out.println("Error: There are no auctions in progress.");
+            return;
+        }
+        for (Auction auction : auctionList) {
+            System.out.println(auction);
+        }
+    }
+
     /*
      * Metoderna nedan är till för att testprogrammet ska sätta upp och kontrollera
      * olika saker. De är INTE tänkta att användas i din egen kod. Du måste fylla i

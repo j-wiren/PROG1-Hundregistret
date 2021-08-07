@@ -41,7 +41,7 @@ public class Auction {
             ArrayList<Bid> bidList = new ArrayList<>(bids.values());
             sortBids(bidList);
             for (Bid bid : bidList) {
-                System.out.println(bid.getOwner().getName() + ": " + bid.getBid());
+                System.out.println(bid.getOwner().getName() + ": " + bid.getBid() + "kr");
             }
         }
     }
@@ -58,5 +58,25 @@ public class Auction {
                 }
             }
         }
+    }
+
+    public String toString() {
+        String result = "Auction #" + this.id + ": " + this.dog.getName() + ". Top bids: [";
+
+        ArrayList<Bid> bidList = new ArrayList<>(bids.values());
+        sortBids(bidList);
+        int counter = 0;
+        for (Bid bid : bidList) {
+            if (counter == 3)
+                break;
+            if (counter != 0)
+                result += ", ";
+            result += (bid.getOwner().getName() + ": " + bid.getBid() + "kr");
+            counter++;
+        }
+        result += "]";
+
+        return result;
+
     }
 }
