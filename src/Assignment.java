@@ -197,13 +197,36 @@ public class Assignment {
         return null;
     }
 
-    public void assignDog() {
+    public Dog inputDog() {
         System.out.print("Enter the dog's name?> ");
         String dogName = scanner.nextLine();
         Dog foundDog = findDog(dogName);
 
         if (foundDog == null) {
             System.out.println("Error: No dog was found.");
+            return null;
+        }
+
+        return foundDog;
+    }
+
+    public Owner inputOwner() {
+        System.out.print("Enter the owner's name?> ");
+        String ownerName = scanner.nextLine();
+        Owner foundOwner = findOwner(ownerName);
+
+        if (foundOwner == null) {
+            System.out.println("Error: No owner was found.");
+            return null;
+        }
+
+        return foundOwner;
+    }
+
+    public void assignDog() {
+        Dog foundDog = inputDog();
+
+        if (foundDog == null) {
             return;
         }
 
@@ -212,12 +235,8 @@ public class Assignment {
             return;
         }
 
-        System.out.print("Enter the owner's name?> ");
-        String ownerName = scanner.nextLine();
-        Owner foundOwner = findOwner(ownerName);
-
+        Owner foundOwner = inputOwner();
         if (foundOwner == null) {
-            System.out.println("Error: No owner was found.");
             return;
         }
 
@@ -269,13 +288,43 @@ public class Assignment {
 
     }
 
-    private Dog findAuction(Dog dog) {
+    private Auction findAuction(Dog dog) {
         for (Auction auction : auctionList) {
             if (auction.getDog() == dog) {
-                return dog;
+                return auction;
             }
         }
         return null;
+    }
+
+    public void makeBid() {
+        Owner foundOwner = inputOwner();
+        if (foundOwner == null) {
+            return;
+        }
+
+        Dog foundDog = inputDog();
+        if (foundDog == null) {
+            return;
+        }
+        Auction foundAuction = findAuction(foundDog);
+        if (foundAuction == null) {
+            System.out.println("Error: " + foundDog.getName() + " is not up for auction.");
+            return;
+        }
+
+        int highestBid = foundAuction.getHighestBid();
+        System.out.print("Enter your bid (min " + (highestBid + 1) + ")?> ");
+        int bid = scanner.nextInt();
+        scanner.nextLine();
+        if (bid < highestBid + 1) {
+            System.out.println("Error: Your bid is too low.");
+            return;
+        }
+        foundAuction.makeBid(foundOwner, bid);
+
+        System.out.println("Your bid has been made.");
+
     }
 
     /*
