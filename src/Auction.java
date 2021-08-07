@@ -60,6 +60,10 @@ public class Auction {
         }
     }
 
+    public void removeBid(Owner owner) {
+        bids.remove(owner);
+    }
+
     public String toString() {
         String result = "Auction #" + this.id + ": " + this.dog.getName() + ". Top bids: [";
 

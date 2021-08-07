@@ -123,6 +123,10 @@ public class Assignment {
         dogList.remove(dog);
         if (dog.getOwner() != null) {
             dog.getOwner().removeDog(dog);
+            Auction auction = findAuction(dog);
+            if (auction != null) {
+                auctionList.remove(auction);
+            }
         }
         System.out.println(dog.getName() + " has been removed from the register");
     }
@@ -141,6 +145,10 @@ public class Assignment {
                     dogList.remove(dog);
                 }
                 owner.removeAllDogs();
+            }
+
+            for (Auction auction : auctionList) {
+                auction.removeBid(owner);
             }
 
             System.out.println(owner.getName() + " has been removed from the register");
