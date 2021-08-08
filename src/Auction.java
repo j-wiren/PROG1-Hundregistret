@@ -22,11 +22,11 @@ public class Auction {
         bids.put(owner, bid);
     }
 
-    public int getHighestBid() {
-        int highestBid = 0;
+    public Bid getHighestBid() {
+        Bid highestBid = null;
         for (Bid bid : bids.values()) {
-            if (bid.getBid() > highestBid) {
-                highestBid = bid.getBid();
+            if (highestBid == null || bid.getBid() > highestBid.getBid()) {
+                highestBid = bid;
             }
         }
         return highestBid;

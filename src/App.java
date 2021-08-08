@@ -21,7 +21,7 @@ public class App {
         assignment.startAuction();
         assignment.makeBid();
         assignment.makeBid();
-        assignment.makeBid();
         assignment.listAuctions();
+        assignment.closeAuction();
     }
 }

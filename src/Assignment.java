@@ -249,6 +249,11 @@ public class Assignment {
         }
 
         foundOwner.addDog(foundDog);
+
+        Auction foundAuction = findAuction(foundDog);
+        if (foundAuction != null) {
+            removeAuction(foundAuction);
+        }
     }
 
     public void listOwners() {
@@ -321,11 +326,15 @@ public class Assignment {
             return;
         }
 
-        int highestBid = foundAuction.getHighestBid();
-        System.out.print("Enter your bid (min " + (highestBid + 1) + ")?> ");
+        Bid highestBid = foundAuction.getHighestBid();
+        int highestBidAmount = 0;
+        if (highestBid != null) {
+            highestBidAmount = highestBid.getBid();
+        }
+        System.out.print("Enter your bid (min " + (highestBidAmount + 1) + ")?> ");
         int bid = scanner.nextInt();
         scanner.nextLine();
-        if (bid < highestBid + 1) {
+        if (bid < highestBidAmount + 1) {
             System.out.println("Error: Your bid is too low.");
             return;
         }
@@ -357,6 +366,39 @@ public class Assignment {
         for (Auction auction : auctionList) {
             System.out.println(auction);
         }
+    }
+
+    public void closeAuction() {
+        Dog foundDog = inputDog();
+        if (foundDog == null) {
+            return;
+        }
+
+        Auction foundAuction = findAuction(foundDog);
+        if (foundAuction == null) {
+            System.out.println("Error: " + foundDog.getName() + " is not up for auction.");
+            return;
+        }
+
+        Bid highestBid = foundAuction.getHighestBid();
+
+        System.out.print("The auction is closed. ");
+
+        if (highestBid != null) {
+            highestBid.getOwner().addDog(foundDog);
+
+            System.out.printf("The winning bid for %s was %dkr and was made by %s.\n", foundDog.getName(),
+                    highestBid.getBid(), highestBid.getOwner().getName());
+        } else {
+            System.out.println("No bids were made for " + foundDog.getName() + ".");
+        }
+
+        removeAuction(foundAuction);
+
+    }
+
+    private void removeAuction(Auction auction) {
+        auctionList.remove(auction);
     }
 
     /*
