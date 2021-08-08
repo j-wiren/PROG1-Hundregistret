@@ -49,13 +49,24 @@ public class Assignment {
 
     private ArrayList<Auction> auctionList = new ArrayList<>();
 
-    private int idCounter = 1;
+    private int auctionIdCounter = 1;
 
-    public void commandPrompt() {
+    public void start() {
+        startUp();
+        runCommandLoop();
+        closeDown();
+    }
+
+    private void startUp() {
+        System.out.println("Welcome to the dog auction!\n");
+        System.out.println("Enter \"list commands\" to see all available commands.");
+
+    }
+
+    private void runCommandLoop() {
         while (true) {
-            System.out.print("Command?> ");
-            String prompt = scanner.nextLine().toLowerCase().trim();
-            switch (prompt) {
+            String command = readCommand();
+            switch (command) {
                 case "register new dog":
                     registerNewDog();
                     break;
@@ -95,13 +106,25 @@ public class Assignment {
                 case "close auction":
                     closeAuction();
                     break;
+                case "list commands":
+                    System.out.println(
+                            "Available commands:\nregister new dog\nlist dogs\nremove dog\nincrease age\nregister new owner\nlist owners\nremove owner\nassign dog\nstart auction\nmake bid\nlist bids\nlist auctions\nclose auction\nexit");
+                    break;
                 case "exit":
                     return;
                 default:
-                    System.out.println(
-                            "Error: No such command.\nAvailable commands:\nregister new dog\nlist dogs\nremove dog\nincrease age\nregister new owner\nlist owners\nremove owner\nassign dog\nstart auction\nmake bid\nlist bids\nlist auctions\nclose auction\nexit");
+                    System.out.println("Error: No such command.");
             }
         }
+    }
+
+    private String readCommand() {
+        System.out.print("Command?> ");
+        return scanner.nextLine().toLowerCase().trim();
+    }
+
+    public void closeDown() {
+        System.out.println("Exiting program. Goodbye!");
     }
 
     private String inputName(String prompt) {
@@ -137,23 +160,26 @@ public class Assignment {
     public void listDogs() {
         if (this.dogList.isEmpty()) {
             System.out.println("Error: no dogs in register");
-        } else {
-            System.out.print("Shortest tail length to display?> ");
-            double minTailLength = scanner.nextDouble();
-            scanner.nextLine();
-            int count = 0;
+            return;
+        }
 
-            for (Dog dog : dogList) {
-                double tailLength = dog.getTailLength();
+        System.out.print("Shortest tail length to display?> ");
+        double minTailLength = scanner.nextDouble();
+        scanner.nextLine();
+        int count = 0;
 
-                if (tailLength >= minTailLength) {
-                    System.out.println(dog);
-                    count++;
-                }
+        sortDogs();
+
+        for (Dog dog : dogList) {
+            double tailLength = dog.getTailLength();
+
+            if (tailLength >= minTailLength) {
+                System.out.println(dog);
+                count++;
             }
-            if (count == 0) {
-                System.out.println("No dogs fit this criteria.");
-            }
+        }
+        if (count == 0) {
+            System.out.println("No dogs fit this criteria.");
         }
     }
 
@@ -233,8 +259,7 @@ public class Assignment {
      * startar processen om, så länge några har bytit plats.
      */
 
-    // public eller ej?? Var används denna?
-    public void sortDogs() {
+    private void sortDogs() {
         boolean hasSwapped = true;
         while (hasSwapped) {
             hasSwapped = false;
@@ -364,7 +389,7 @@ public class Assignment {
             return;
         }
 
-        Auction auction = new Auction(foundDog, idCounter++);
+        Auction auction = new Auction(foundDog, auctionIdCounter++);
         auctionList.add(auction);
 
         System.out.println(foundDog.getName() + " has been put up for auction in auction #" + auction.getID() + ".");

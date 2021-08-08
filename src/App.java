@@ -18,6 +18,6 @@ public class App {
         assignment.addOwner(owner1);
         assignment.addOwner(owner2);
 
-        assignment.commandPrompt();
+        assignment.start();
     }
 }
