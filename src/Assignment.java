@@ -1,4 +1,7 @@
-// @author Joakim Wirén jowi1137
+
+/**
+ * @author Joakim Wirén jowi1137
+ */
 
 import java.util.*;
 
@@ -48,6 +51,59 @@ public class Assignment {
 
     private int idCounter = 1;
 
+    public void commandPrompt() {
+        while (true) {
+            System.out.print("Command?> ");
+            String prompt = scanner.nextLine().toLowerCase().trim();
+            switch (prompt) {
+                case "register new dog":
+                    registerNewDog();
+                    break;
+                case "list dogs":
+                    listDogs();
+                    break;
+                case "increase age":
+                    increaseAge();
+                    break;
+                case "remove dog":
+                    removeDog();
+                    break;
+                case "register new owner":
+                    registerNewOwner();
+                    break;
+                case "assign dog":
+                    assignDog();
+                    break;
+                case "list owners":
+                    listOwners();
+                    break;
+                case "remove owner":
+                    removeOwner();
+                    break;
+                case "start auction":
+                    startAuction();
+                    break;
+                case "make bid":
+                    makeBid();
+                    break;
+                case "list bids":
+                    listBids();
+                    break;
+                case "list auctions":
+                    listAuctions();
+                    break;
+                case "close auction":
+                    closeAuction();
+                    break;
+                case "exit":
+                    return;
+                default:
+                    System.out.println(
+                            "Error: No such command.\nAvailable commands:\nregister new dog\nlist dogs\nincrease age\nremove dog\nregister new owner\nassign dog\nlist owners\nremove owner\nstart auction\nmake bid\nlist bids\nlist auctions\nclose auction\nexit");
+            }
+        }
+    }
+
     public void registerNewDog() {
         System.out.print("Name?> ");
         String name = scanner.nextLine();
@@ -89,7 +145,7 @@ public class Assignment {
         }
     }
 
-    public Dog findDog(String searchQuery) {
+    private Dog findDog(String searchQuery) {
         for (Dog dog : dogList) {
             if (dog.getName().toLowerCase().equals(searchQuery.toLowerCase())) {
                 return dog;
@@ -165,6 +221,7 @@ public class Assignment {
      * startar processen om, så länge några har bytit plats.
      */
 
+    // public eller ej?? Var används denna?
     public void sortDogs() {
         boolean hasSwapped = true;
         while (hasSwapped) {
@@ -196,7 +253,7 @@ public class Assignment {
         this.ownerList.add(owner);
     }
 
-    public Owner findOwner(String searchQuery) {
+    private Owner findOwner(String searchQuery) {
         for (Owner owner : ownerList) {
             if (owner.getName().toLowerCase().equals(searchQuery.toLowerCase())) {
                 return owner;
@@ -205,7 +262,7 @@ public class Assignment {
         return null;
     }
 
-    public Dog inputDog() {
+    private Dog inputDog() {
         System.out.print("Enter the dog's name?> ");
         String dogName = scanner.nextLine();
         Dog foundDog = findDog(dogName);
@@ -218,7 +275,7 @@ public class Assignment {
         return foundDog;
     }
 
-    public Owner inputOwner() {
+    private Owner inputOwner() {
         System.out.print("Enter the owner's name?> ");
         String ownerName = scanner.nextLine();
         Owner foundOwner = findOwner(ownerName);

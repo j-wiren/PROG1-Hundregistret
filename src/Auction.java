@@ -1,3 +1,8 @@
+
+/**
+ * @author Joakim Wirén jowi1137
+ */
+
 import java.util.*;
 
 public class Auction {

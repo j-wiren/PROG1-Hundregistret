@@ -1,3 +1,8 @@
+
+/**
+ * @author Joakim Wirén jowi1137
+ */
+
 public class Bid {
     private Owner owner;
     private int bid;

@@ -18,10 +18,6 @@ public class App {
         assignment.addOwner(owner1);
         assignment.addOwner(owner2);
 
-        assignment.startAuction();
-        assignment.makeBid();
-        assignment.makeBid();
-        assignment.listAuctions();
-        assignment.closeAuction();
+        assignment.commandPrompt();
     }
 }
