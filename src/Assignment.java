@@ -99,16 +99,28 @@ public class Assignment {
                     return;
                 default:
                     System.out.println(
-                            "Error: No such command.\nAvailable commands:\nregister new dog\nlist dogs\nincrease age\nremove dog\nregister new owner\nassign dog\nlist owners\nremove owner\nstart auction\nmake bid\nlist bids\nlist auctions\nclose auction\nexit");
+                            "Error: No such command.\nAvailable commands:\nregister new dog\nlist dogs\nremove dog\nincrease age\nregister new owner\nlist owners\nremove owner\nassign dog\nstart auction\nmake bid\nlist bids\nlist auctions\nclose auction\nexit");
             }
         }
     }
 
+    private String inputName(String prompt) {
+        String textInput = "";
+        while (textInput.isEmpty()) {
+            System.out.print(prompt + "?> ");
+            textInput = scanner.nextLine().toLowerCase().trim();
+            if (textInput.isEmpty()) {
+                System.out.println("Error: The name can't be empty.");
+            }
+        }
+        // Gör att strängen börjar med stor bokstav
+        textInput = textInput.substring(0, 1).toUpperCase() + textInput.substring(1);
+        return textInput;
+    }
+
     public void registerNewDog() {
-        System.out.print("Name?> ");
-        String name = scanner.nextLine();
-        System.out.print("Breed?> ");
-        String breed = scanner.nextLine();
+        String name = inputName("Name");
+        String breed = inputName("Breed");
         System.out.print("Age?> ");
         int age = scanner.nextInt();
         scanner.nextLine();
@@ -147,7 +159,7 @@ public class Assignment {
 
     private Dog findDog(String searchQuery) {
         for (Dog dog : dogList) {
-            if (dog.getName().toLowerCase().equals(searchQuery.toLowerCase())) {
+            if (dog.getName().toLowerCase().equals(searchQuery.toLowerCase().trim())) {
                 return dog;
             }
         }
@@ -170,7 +182,7 @@ public class Assignment {
 
     public void removeDog() {
         System.out.print("Which dog should be removed?> ");
-        String searchQuery = scanner.nextLine();
+        String searchQuery = scanner.nextLine().toLowerCase().trim();
         Dog dog = findDog(searchQuery);
         if (dog == null) {
             System.out.println("Error: No dog was found.");
@@ -179,10 +191,10 @@ public class Assignment {
         dogList.remove(dog);
         if (dog.getOwner() != null) {
             dog.getOwner().removeDog(dog);
-            Auction auction = findAuction(dog);
-            if (auction != null) {
-                auctionList.remove(auction);
-            }
+        }
+        Auction auction = findAuction(dog);
+        if (auction != null) {
+            auctionList.remove(auction);
         }
         System.out.println(dog.getName() + " has been removed from the register");
     }
@@ -246,16 +258,17 @@ public class Assignment {
     }
 
     public void registerNewOwner() {
-        System.out.print("Name?> ");
-        String name = scanner.nextLine();
+        String name = inputName("Name");
 
         Owner owner = new Owner(name);
         this.ownerList.add(owner);
+
+        System.out.println(name + " added to the register.");
     }
 
     private Owner findOwner(String searchQuery) {
         for (Owner owner : ownerList) {
-            if (owner.getName().toLowerCase().equals(searchQuery.toLowerCase())) {
+            if (owner.getName().toLowerCase().equals(searchQuery.toLowerCase().trim())) {
                 return owner;
             }
         }
@@ -358,7 +371,7 @@ public class Assignment {
 
     }
 
-    private Auction findAuction(Dog dog) {
+    public Auction findAuction(Dog dog) {
         for (Auction auction : auctionList) {
             if (auction.getDog() == dog) {
                 return auction;
@@ -388,12 +401,14 @@ public class Assignment {
         if (highestBid != null) {
             highestBidAmount = highestBid.getBid();
         }
-        System.out.print("Enter your bid (min " + (highestBidAmount + 1) + ")?> ");
-        int bid = scanner.nextInt();
-        scanner.nextLine();
-        if (bid < highestBidAmount + 1) {
-            System.out.println("Error: Your bid is too low.");
-            return;
+        int bid = 0;
+        while (bid < highestBidAmount + 1) {
+            System.out.print("Enter your bid (min " + (highestBidAmount + 1) + ")?> ");
+            bid = scanner.nextInt();
+            scanner.nextLine();
+            if (bid < highestBidAmount + 1) {
+                System.out.println("Error: Your bid is too low.");
+            }
         }
         foundAuction.makeBid(foundOwner, new Bid(foundOwner, bid));
 

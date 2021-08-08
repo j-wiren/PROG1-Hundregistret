@@ -80,7 +80,7 @@ public class Auction {
                 break;
             if (counter != 0)
                 result += ", ";
-            result += (bid.getOwner().getName() + ": " + bid.getBid() + "kr");
+            result += bid.getOwner().getName() + ": " + bid.getBid() + "kr";
             counter++;
         }
         result += "]";
