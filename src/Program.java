@@ -5,127 +5,15 @@
 
 import java.util.*;
 
-public class Assignment {
+public class Program {
 
-    /*
-     * Allt eftersom du skriver dina metoder fyller du i deras namn i konstanterna
-     * nedan. Testprogrammet använder dessa konstanter för att hitta dina metoder,
-     * så det är viktigt att namnen stämmer.
-     */
-    public static final String REGISTER_NEW_DOG_METHOD = "registerNewDog"; // U7.1
-    public static final String LIST_DOGS_METHOD = "listDogs"; // U7.2 och U8.4
-    public static final String FIND_DOG_METHOD = "findDog"; // U7.3 - hjälpmetod tänkt att användas i de följande stegen
-    public static final String INCREASE_AGE_METHOD = "increaseAge"; // U7.4
-    public static final String REMOVE_DOG_METHOD = "removeDog"; // U7.5, U8.6 och U9.6
-    public static final String SORT_DOGS_METHOD = "sortDogs"; // U7.6
-    public static final String REGISTER_NEW_OWNER_METHOD = "registerNewOwner"; // U8.1
-    public static final String FIND_OWNER_METHOD = "findOwner"; // U8.2 - hjälpmetod tänkt att användas i de följande
-                                                                // stegen
-    public static final String GIVE_DOG_METHOD = "assignDog"; // U8.3 och framåt
-    public static final String LIST_OWNERS_METHOD = "listOwners"; // U8.4
-    public static final String OWNER_OF_DOG_METHOD = "checkIfOwnerOwnsDog"; // U8.5, obs! metoden ska ligga i
-                                                                            // Owner-klassen
-    public static final String REMOVE_OWNER_METHOD = "removeOwner"; // U8.7 och U9.6
-    public static final String START_AUCTION_METHOD = "startAuction"; // U9.1 och framåt
-    public static final String FIND_AUCTION_METHOD = "findAuction"; // U9.2 - hjälpmetod tänkt att användas i de
-                                                                    // följande
-    // stegen
-    public static final String MAKE_BID_METHOD = "makeBid"; // U9.3 och framåt
-    public static final String LIST_BIDS_METHOD = "listBids"; // U9.4 och framåt
-    public static final String LIST_AUCTIONS_METHOD = "listAuctions"; // U9.5 och framåt
-    public static final String CLOSE_AUCTION_METHOD = "closeAuction"; // U9.6
-
-    /********************************************************************************
-     * Här nedanför skriver du dina metoder. Du kommer att kunna lämna in samma
-     * fil(er) i samtliga inlämningar, så du behöver inte börja om för varje ny
-     * metod.
-     ********************************************************************************/
-
-    private static Scanner scanner = new Scanner(System.in);
+    public Scanner scanner = new Scanner(System.in);
 
     private ArrayList<Dog> dogList = new ArrayList<>();
-
     private ArrayList<Owner> ownerList = new ArrayList<>();
-
     private ArrayList<Auction> auctionList = new ArrayList<>();
 
     private int auctionIdCounter = 1;
-
-    public void start() {
-        startUp();
-        runCommandLoop();
-        closeDown();
-    }
-
-    private void startUp() {
-        System.out.println("Welcome to the dog auction!\n");
-        System.out.println("Enter \"list commands\" to see all available commands.");
-
-    }
-
-    private void runCommandLoop() {
-        while (true) {
-            String command = readCommand();
-            switch (command) {
-                case "register new dog":
-                    registerNewDog();
-                    break;
-                case "list dogs":
-                    listDogs();
-                    break;
-                case "increase age":
-                    increaseAge();
-                    break;
-                case "remove dog":
-                    removeDog();
-                    break;
-                case "register new owner":
-                    registerNewOwner();
-                    break;
-                case "assign dog":
-                    assignDog();
-                    break;
-                case "list owners":
-                    listOwners();
-                    break;
-                case "remove owner":
-                    removeOwner();
-                    break;
-                case "start auction":
-                    startAuction();
-                    break;
-                case "make bid":
-                    makeBid();
-                    break;
-                case "list bids":
-                    listBids();
-                    break;
-                case "list auctions":
-                    listAuctions();
-                    break;
-                case "close auction":
-                    closeAuction();
-                    break;
-                case "list commands":
-                    System.out.println(
-                            "Available commands:\nregister new dog\nlist dogs\nremove dog\nincrease age\nregister new owner\nlist owners\nremove owner\nassign dog\nstart auction\nmake bid\nlist bids\nlist auctions\nclose auction\nexit");
-                    break;
-                case "exit":
-                    return;
-                default:
-                    System.out.println("Error: No such command.");
-            }
-        }
-    }
-
-    private String readCommand() {
-        System.out.print("Command?> ");
-        return scanner.nextLine().toLowerCase().trim();
-    }
-
-    public void closeDown() {
-        System.out.println("Exiting program. Goodbye!");
-    }
 
     private String inputName(String prompt) {
         String textInput = "";
@@ -136,6 +24,7 @@ public class Assignment {
                 System.out.println("Error: The name can't be empty.");
             }
         }
+
         // Gör att strängen börjar med stor bokstav
         textInput = textInput.substring(0, 1).toUpperCase() + textInput.substring(1);
         return textInput;
@@ -171,7 +60,7 @@ public class Assignment {
         sortDogs();
 
         for (Dog dog : dogList) {
-            double tailLength = dog.getTailLength();
+            double tailLength = dog.calcTailLength();
 
             if (tailLength >= minTailLength) {
                 System.out.println(dog);
@@ -273,9 +162,9 @@ public class Assignment {
     }
 
     private boolean compareDogs(Dog dogA, Dog dogB) {
-        if (dogA.getTailLength() < dogB.getTailLength()) {
+        if (dogA.calcTailLength() < dogB.calcTailLength()) {
             return false;
-        } else if (dogA.getTailLength() > dogB.getTailLength()) {
+        } else if (dogA.calcTailLength() > dogB.calcTailLength()) {
             return true;
         } else {
             return dogA.getName().compareTo(dogB.getName()) > 0;
@@ -396,7 +285,7 @@ public class Assignment {
 
     }
 
-    public Auction findAuction(Dog dog) {
+    private Auction findAuction(Dog dog) {
         for (Auction auction : auctionList) {
             if (auction.getDog() == dog) {
                 return auction;
@@ -497,93 +386,4 @@ public class Assignment {
     private void removeAuction(Auction auction) {
         auctionList.remove(auction);
     }
-
-    /*
-     * Metoderna nedan är till för att testprogrammet ska sätta upp och kontrollera
-     * olika saker. De är INTE tänkta att användas i din egen kod. Du måste fylla i
-     * den saknade koden i metoderna allteftersom de behövs av testprogrammet.
-     */
-
-    /*
-     * Byt ut koden i nedanstående metod så att den väntar på att användaren trycker
-     * på return. Du gör detta genom att anropa nextLine-metoden på din scanner.
-     * 
-     * Om du inte du gjort övningen till F6 där man ska skriva en egen klass för att
-     * hantera inmatning så gör den. Den är ett bra exempel på en klass med
-     * funktionalitet, och kommer att göra inlämningsuppgifterna enklare eftersom du
-     * inte kommer att drabbas av några vanliga fel.
-     * 
-     * Behövs från U7.5, eventuellt tidigare
-     */
-
-    public void waitForUserInput() {
-        scanner.nextLine();
-    }
-
-    /*
-     * Byt ut koden i nedanstående metod så att hunden läggs in i listan av hundar.
-     * Kravet i uppgiften är formulerat så att en ArrayList ska användas, men det är
-     * okej att använda andra klasser ur Javas Collection-api om du känner till dem.
-     * 
-     * Behövs från U7.2
-     */
-    public void addDog(Dog dog) {
-        dogList.add(dog);
-    }
-
-    /*
-     * Byt ut koden i nedanstående metod så att listan på hundar returneras.
-     * 
-     * Kravet i uppgiften är formulerat så att en ArrayList ska användas, men det är
-     * okej att använda andra list-klasser ur Javas Collection-api om du känner till
-     * det, och föredrar en annan klass därifrån. Returtypen List gör att det går
-     * att skicka tillbaka vilken listtyp som helst.
-     * 
-     * Denna metod är ENBART till för testprogrammet i steg U7.1 till U9.7. Den ska
-     * nästan säkert INTE finnas i det slutgiltiga fullständiga programmet, så
-     * använd den inte i din egen kod.
-     * 
-     * Behövs från U7.1
-     */
-    public List<Dog> getDogs() {
-        return dogList;
-    }
-
-    /*
-     * Byt ut koden i nedanstående metod så att ägaren läggs in i listan av ägare.
-     * Uppgiften har inget specifikt krav på vilken typ av samling du ska använda
-     * för detta, utan det får du bestämma själv. Det kan vara en array, en
-     * ArrayList, en annan av Javas samlingsklasser, eller något du skrivit själv.
-     * 
-     * Kravet i uppgiften är formulerat så att en ArrayList ska användas, men det är
-     * okej att använda andra klasser ur Javas Collection-api om du känner till det,
-     * 
-     * Behövs från U8.2
-     */
-    public void addOwner(Owner o) {
-        ownerList.add(o);
-    }
-
-    /*
-     * Byt ut koden i nedanstående metod så att ägaren läggs in i listan av ägare.
-     * Uppgiften har inget specifikt krav på vilken typ av samling du ska använda
-     * för detta, utan det får du bestämma själv. Det kan vara en array, en
-     * ArrayList, en annan av Javas samlingsklasser, eller något du skrivit själv.
-     * 
-     * Kravet i uppgiften är formulerat så att en ArrayList ska användas, men det är
-     * okej att använda andra klasser ur Javas Collection-api om du känner till dem.
-     * 
-     * Behövs från U8.1
-     */
-    public List<Owner> getOwners() {
-        return ownerList;
-    }
-
-    /*
-     * Om du använder en array för att spara ägarna kan nedanstående variant
-     * användas istället
-     */
-    // public Collection<Owner> getOwners() {
-    // return Arrays.asList(NAMNET_PÅ_ARRAYEN);
-    // }
 }

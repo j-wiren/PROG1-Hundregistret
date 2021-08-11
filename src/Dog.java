@@ -6,6 +6,8 @@
 import java.util.*;
 
 public class Dog {
+    private static final double DACHSHUND_TAIL_LENGTH = 3.7;
+
     private String name;
     private String breed;
     private int age;
@@ -35,12 +37,11 @@ public class Dog {
         return weight;
     }
 
-    public double getTailLength() {
+    public double calcTailLength() {
         double tailLength;
-        double tailLengthDachshund = 3.7;
         List<String> dachs = Arrays.asList("tax", "dachshund", "mäyräkoira", "teckel");
         if (dachs.contains(this.breed.toLowerCase())) {
-            tailLength = tailLengthDachshund;
+            tailLength = DACHSHUND_TAIL_LENGTH;
         } else {
             tailLength = age * weight / 10.0;
         }
@@ -84,10 +85,10 @@ public class Dog {
     public String toString() {
         if (this.getOwner() != null) {
             return "- " + this.name + " (" + this.breed + ", " + this.age + " years, " + this.weight + " kg, "
-                    + getTailLength() + " cm tail, owned by " + this.getOwner().getName() + ")";
+                    + calcTailLength() + " cm tail, owned by " + this.getOwner().getName() + ")";
         } else {
             return "- " + this.name + " (" + this.breed + ", " + this.age + " years, " + this.weight + " kg, "
-                    + getTailLength() + " cm tail)";
+                    + calcTailLength() + " cm tail)";
         }
     }
 }
