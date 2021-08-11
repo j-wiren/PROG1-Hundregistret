@@ -6,7 +6,7 @@ public class Main {
 	private Program program = new Program();
 
 	private String[] commands = { "Available commands:", "register new dog", "list dogs", "remove dog", "increase age",
-			"register new owner", "list owners", "remove owner", "assign dog", "start auction", "make bid", "list bids",
+			"register new owner", "list owners", "remove owner", "give dog", "start auction", "make bid", "list bids",
 			"list auctions", "close auction", "exit" };
 
 	public static void main(String[] args) throws Exception {

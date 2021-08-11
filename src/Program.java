@@ -19,11 +19,30 @@ public class Program {
         return this.scanner;
     }
 
+    private String inputString(String prompt) {
+        System.out.print(prompt + "?> ");
+        String stringInput = scanner.nextLine().trim();
+        return stringInput;
+    }
+
+    private int inputInt(String prompt) {
+        System.out.print(prompt + "?> ");
+        int intInput = scanner.nextInt();
+        scanner.nextLine();
+        return intInput;
+    }
+
+    private double inputDouble(String prompt) {
+        System.out.print(prompt + "?> ");
+        double doubleInput = scanner.nextDouble();
+        scanner.nextLine();
+        return doubleInput;
+    }
+
     private String inputName(String prompt) {
         String textInput = "";
         while (textInput.isEmpty()) {
-            System.out.print(prompt + "?> ");
-            textInput = scanner.nextLine().toLowerCase().trim();
+            textInput = inputString(prompt).toLowerCase();
             if (textInput.isEmpty()) {
                 System.out.println("Error: The name can't be empty.");
             }
@@ -37,12 +56,8 @@ public class Program {
     public void registerNewDog() {
         String name = inputName("Name");
         String breed = inputName("Breed");
-        System.out.print("Age?> ");
-        int age = scanner.nextInt();
-        scanner.nextLine();
-        System.out.print("Weight?> ");
-        int weight = scanner.nextInt();
-        scanner.nextLine();
+        int age = inputInt("Age");
+        int weight = inputInt("Weight");
 
         Dog dog = new Dog(name, breed, age, weight);
         this.dogList.add(dog);
@@ -51,8 +66,7 @@ public class Program {
     }
 
     public void removeDog() {
-        System.out.print("Which dog should be removed?> ");
-        String searchQuery = scanner.nextLine().toLowerCase().trim();
+        String searchQuery = inputString("Which dog should be removed").toLowerCase();
         Dog dog = findDog(searchQuery);
         if (dog == null) {
             System.out.println("Error: No dog was found.");
@@ -74,10 +88,7 @@ public class Program {
             System.out.println("Error: no dogs in register");
             return;
         }
-
-        System.out.print("Shortest tail length to display?> ");
-        double minTailLength = scanner.nextDouble();
-        scanner.nextLine();
+        double minTailLength = inputDouble("Shortest tail length to display");
         int count = 0;
 
         sortDogs();
@@ -97,7 +108,7 @@ public class Program {
 
     private Dog findDog(String searchQuery) {
         for (Dog dog : dogList) {
-            if (dog.getName().toLowerCase().equals(searchQuery.toLowerCase().trim())) {
+            if (dog.getName().toLowerCase().equals(searchQuery.toLowerCase())) {
                 return dog;
             }
         }
@@ -138,8 +149,7 @@ public class Program {
     }
 
     private Dog inputDog() {
-        System.out.print("Enter the dog's name?> ");
-        String dogName = scanner.nextLine();
+        String dogName = inputString("Enter the dog's name");
         Dog foundDog = findDog(dogName);
 
         if (foundDog == null) {
@@ -151,8 +161,7 @@ public class Program {
     }
 
     public void increaseAge() {
-        System.out.print("Which dog should have its age increased?> ");
-        String searchQuery = scanner.nextLine();
+        String searchQuery = inputString("Which dog should have its age increased");
         Dog dog = findDog(searchQuery);
         if (dog == null) {
             System.out.println("Error: No dog was found.");
@@ -199,8 +208,7 @@ public class Program {
     }
 
     public void removeOwner() {
-        System.out.print("Which owner should be removed?> ");
-        String searchQuery = scanner.nextLine();
+        String searchQuery = inputString("Which owner should be removed");
         Owner owner = findOwner(searchQuery);
         if (owner == null) {
             System.out.println("Error: No owner was found.");
@@ -242,7 +250,7 @@ public class Program {
 
     private Owner findOwner(String searchQuery) {
         for (Owner owner : ownerList) {
-            if (owner.getName().toLowerCase().equals(searchQuery.toLowerCase().trim())) {
+            if (owner.getName().toLowerCase().equals(searchQuery.toLowerCase())) {
                 return owner;
             }
         }
@@ -250,8 +258,7 @@ public class Program {
     }
 
     private Owner inputOwner() {
-        System.out.print("Enter the owner's name?> ");
-        String ownerName = scanner.nextLine();
+        String ownerName = inputString("Enter the owner's name");
         Owner foundOwner = findOwner(ownerName);
 
         if (foundOwner == null) {
@@ -263,8 +270,7 @@ public class Program {
     }
 
     public void startAuction() {
-        System.out.print("Enter the dog's name?> ");
-        String dogName = scanner.nextLine();
+        String dogName = inputString("Enter the dog's name");
         Dog foundDog = findDog(dogName);
 
         if (foundDog == null) {
@@ -364,9 +370,7 @@ public class Program {
         }
         int bid = 0;
         while (bid < highestBidAmount + 1) {
-            System.out.print("Enter your bid (min " + (highestBidAmount + 1) + ")?> ");
-            bid = scanner.nextInt();
-            scanner.nextLine();
+            bid = inputInt("Enter your bid (min " + (highestBidAmount + 1) + ")");
             if (bid < highestBidAmount + 1) {
                 System.out.println("Error: Your bid is too low.");
             }
