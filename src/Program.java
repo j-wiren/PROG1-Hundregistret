@@ -50,6 +50,25 @@ public class Program {
         System.out.println(name + " added to the register");
     }
 
+    public void removeDog() {
+        System.out.print("Which dog should be removed?> ");
+        String searchQuery = scanner.nextLine().toLowerCase().trim();
+        Dog dog = findDog(searchQuery);
+        if (dog == null) {
+            System.out.println("Error: No dog was found.");
+            return;
+        }
+        dogList.remove(dog);
+        if (dog.getOwner() != null) {
+            dog.getOwner().removeDog(dog);
+        }
+        Auction auction = findAuction(dog);
+        if (auction != null) {
+            auctionList.remove(auction);
+        }
+        System.out.println(dog.getName() + " has been removed from the register");
+    }
+
     public void listDogs() {
         if (this.dogList.isEmpty()) {
             System.out.println("Error: no dogs in register");
@@ -85,71 +104,14 @@ public class Program {
         return null;
     }
 
-    public void increaseAge() {
-        System.out.print("Which dog should have its age increased?> ");
-        String searchQuery = scanner.nextLine();
-        Dog dog = findDog(searchQuery);
-        if (dog == null) {
-            System.out.println("Error: No dog was found.");
-            return;
-        }
-        dog.updateAge(1);
-
-        System.out.println(dog.getName() + "'s age has been increased.");
-
-    }
-
-    public void removeDog() {
-        System.out.print("Which dog should be removed?> ");
-        String searchQuery = scanner.nextLine().toLowerCase().trim();
-        Dog dog = findDog(searchQuery);
-        if (dog == null) {
-            System.out.println("Error: No dog was found.");
-            return;
-        }
-        dogList.remove(dog);
-        if (dog.getOwner() != null) {
-            dog.getOwner().removeDog(dog);
-        }
-        Auction auction = findAuction(dog);
-        if (auction != null) {
-            auctionList.remove(auction);
-        }
-        System.out.println(dog.getName() + " has been removed from the register");
-    }
-
-    public void removeOwner() {
-        System.out.print("Which owner should be removed?> ");
-        String searchQuery = scanner.nextLine();
-        Owner owner = findOwner(searchQuery);
-        if (owner == null) {
-            System.out.println("Error: No owner was found.");
-        } else {
-            ownerList.remove(owner);
-
-            if (owner.getDogs() != null) {
-                for (Dog dog : owner.getDogs()) {
-                    dogList.remove(dog);
-                }
-                owner.removeAllDogs();
-            }
-
-            for (Auction auction : auctionList) {
-                auction.removeBid(owner);
-            }
-
-            System.out.println(owner.getName() + " has been removed from the register");
-        }
-    }
-
     /*
-     * Sorteringsalgoritmen är bubble sort -
+     * Sorteringsalgoritm: Bubble Sort
      * https://www.bbc.co.uk/bitesize/guides/z22wwmn/revision/3 Metoden sortDogs går
      * igenom listan av hundar och jämför två i taget med hjälp av
      * compareDogs-metoden. Om den första är större än den andra byter så byter de
      * plats. Om de är lika stora jämförs namnen. Även här byter de plats om den
      * första kommer efter den andra i alfabetisk ordning. När alla har jämförts
-     * startar processen om, så länge några har bytit plats.
+     * startar processen om, så länge några har bytt plats.
      */
 
     private void sortDogs() {
@@ -175,24 +137,6 @@ public class Program {
         }
     }
 
-    public void registerNewOwner() {
-        String name = inputName("Name");
-
-        Owner owner = new Owner(name);
-        this.ownerList.add(owner);
-
-        System.out.println(name + " added to the register.");
-    }
-
-    private Owner findOwner(String searchQuery) {
-        for (Owner owner : ownerList) {
-            if (owner.getName().toLowerCase().equals(searchQuery.toLowerCase().trim())) {
-                return owner;
-            }
-        }
-        return null;
-    }
-
     private Dog inputDog() {
         System.out.print("Enter the dog's name?> ");
         String dogName = scanner.nextLine();
@@ -206,17 +150,18 @@ public class Program {
         return foundDog;
     }
 
-    private Owner inputOwner() {
-        System.out.print("Enter the owner's name?> ");
-        String ownerName = scanner.nextLine();
-        Owner foundOwner = findOwner(ownerName);
-
-        if (foundOwner == null) {
-            System.out.println("Error: No owner was found.");
-            return null;
+    public void increaseAge() {
+        System.out.print("Which dog should have its age increased?> ");
+        String searchQuery = scanner.nextLine();
+        Dog dog = findDog(searchQuery);
+        if (dog == null) {
+            System.out.println("Error: No dog was found.");
+            return;
         }
+        dog.updateAge(1);
 
-        return foundOwner;
+        System.out.println(dog.getName() + "'s age has been increased.");
+
     }
 
     public void assignDog() {
@@ -244,6 +189,39 @@ public class Program {
         }
     }
 
+    public void registerNewOwner() {
+        String name = inputName("Name");
+
+        Owner owner = new Owner(name);
+        this.ownerList.add(owner);
+
+        System.out.println(name + " added to the register.");
+    }
+
+    public void removeOwner() {
+        System.out.print("Which owner should be removed?> ");
+        String searchQuery = scanner.nextLine();
+        Owner owner = findOwner(searchQuery);
+        if (owner == null) {
+            System.out.println("Error: No owner was found.");
+        } else {
+            ownerList.remove(owner);
+
+            if (owner.getDogs() != null) {
+                for (Dog dog : owner.getDogs()) {
+                    dogList.remove(dog);
+                }
+                owner.removeAllDogs();
+            }
+
+            for (Auction auction : auctionList) {
+                auction.removeBid(owner);
+            }
+
+            System.out.println(owner.getName() + " has been removed from the register");
+        }
+    }
+
     public void listOwners() {
         if (ownerList.isEmpty()) {
             System.out.println("Error: There are no owners in the register");
@@ -260,6 +238,28 @@ public class Program {
                 }
             }
         }
+    }
+
+    private Owner findOwner(String searchQuery) {
+        for (Owner owner : ownerList) {
+            if (owner.getName().toLowerCase().equals(searchQuery.toLowerCase().trim())) {
+                return owner;
+            }
+        }
+        return null;
+    }
+
+    private Owner inputOwner() {
+        System.out.print("Enter the owner's name?> ");
+        String ownerName = scanner.nextLine();
+        Owner foundOwner = findOwner(ownerName);
+
+        if (foundOwner == null) {
+            System.out.println("Error: No owner was found.");
+            return null;
+        }
+
+        return foundOwner;
     }
 
     public void startAuction() {
@@ -287,6 +287,49 @@ public class Program {
 
         System.out.println(foundDog.getName() + " has been put up for auction in auction #" + auction.getID() + ".");
 
+    }
+
+    public void listAuctions() {
+        if (auctionList.isEmpty()) {
+            System.out.println("Error: There are no auctions in progress.");
+            return;
+        }
+        for (Auction auction : auctionList) {
+            System.out.println(auction);
+        }
+    }
+
+    public void closeAuction() {
+        Dog foundDog = inputDog();
+        if (foundDog == null) {
+            return;
+        }
+
+        Auction foundAuction = findAuction(foundDog);
+        if (foundAuction == null) {
+            System.out.println("Error: " + foundDog.getName() + " is not up for auction.");
+            return;
+        }
+
+        Bid highestBid = foundAuction.getHighestBid();
+
+        System.out.print("The auction is closed. ");
+
+        if (highestBid != null) {
+            highestBid.getOwner().addDog(foundDog);
+
+            System.out.printf("The winning bid for %s was %dkr and was made by %s.\n", foundDog.getName(),
+                    highestBid.getBid(), highestBid.getOwner().getName());
+        } else {
+            System.out.println("No bids were made for " + foundDog.getName() + ".");
+        }
+
+        removeAuction(foundAuction);
+
+    }
+
+    private void removeAuction(Auction auction) {
+        auctionList.remove(auction);
     }
 
     private Auction findAuction(Dog dog) {
@@ -348,46 +391,4 @@ public class Program {
         foundAuction.listBids();
     }
 
-    public void listAuctions() {
-        if (auctionList.isEmpty()) {
-            System.out.println("Error: There are no auctions in progress.");
-            return;
-        }
-        for (Auction auction : auctionList) {
-            System.out.println(auction);
-        }
-    }
-
-    public void closeAuction() {
-        Dog foundDog = inputDog();
-        if (foundDog == null) {
-            return;
-        }
-
-        Auction foundAuction = findAuction(foundDog);
-        if (foundAuction == null) {
-            System.out.println("Error: " + foundDog.getName() + " is not up for auction.");
-            return;
-        }
-
-        Bid highestBid = foundAuction.getHighestBid();
-
-        System.out.print("The auction is closed. ");
-
-        if (highestBid != null) {
-            highestBid.getOwner().addDog(foundDog);
-
-            System.out.printf("The winning bid for %s was %dkr and was made by %s.\n", foundDog.getName(),
-                    highestBid.getBid(), highestBid.getOwner().getName());
-        } else {
-            System.out.println("No bids were made for " + foundDog.getName() + ".");
-        }
-
-        removeAuction(foundAuction);
-
-    }
-
-    private void removeAuction(Auction auction) {
-        auctionList.remove(auction);
-    }
 }

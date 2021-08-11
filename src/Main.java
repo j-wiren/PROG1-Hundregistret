@@ -5,18 +5,22 @@
 public class Main {
 	private Program program = new Program();
 
+	private String[] commands = { "Available commands:", "register new dog", "list dogs", "remove dog", "increase age",
+			"register new owner", "list owners", "remove owner", "assign dog", "start auction", "make bid", "list bids",
+			"list auctions", "close auction", "exit" };
+
 	public static void main(String[] args) throws Exception {
 		Main main = new Main();
 		main.start();
 	}
 
 	public void start() {
-		startUp();
+		startMsg();
 		runCommandLoop();
 		closeDown();
 	}
 
-	private void startUp() {
+	private void startMsg() {
 		System.out.println("Welcome to the dog register!\n");
 		System.out.println("Enter \"list commands\" to see all available commands.");
 
@@ -66,8 +70,9 @@ public class Main {
 					program.closeAuction();
 					break;
 				case "list commands":
-					System.out.println(
-							"Available commands:\nregister new dog\nlist dogs\nremove dog\nincrease age\nregister new owner\nlist owners\nremove owner\nassign dog\nstart auction\nmake bid\nlist bids\nlist auctions\nclose auction\nexit");
+					for (String com : commands) {
+						System.out.println(com);
+					}
 					break;
 				case "exit":
 					return;
@@ -77,7 +82,6 @@ public class Main {
 		}
 	}
 
-	// fixa scanner
 	private String readCommand() {
 		System.out.print("Command?> ");
 		return program.getScanner().nextLine().toLowerCase().trim();
