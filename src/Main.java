@@ -80,7 +80,7 @@ public class Main {
 	// fixa scanner
 	private String readCommand() {
 		System.out.print("Command?> ");
-		return program.scanner.nextLine().toLowerCase().trim();
+		return program.getScanner().nextLine().toLowerCase().trim();
 	}
 
 	private void closeDown() {

@@ -7,13 +7,17 @@ import java.util.*;
 
 public class Program {
 
-    public Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     private ArrayList<Dog> dogList = new ArrayList<>();
     private ArrayList<Owner> ownerList = new ArrayList<>();
     private ArrayList<Auction> auctionList = new ArrayList<>();
 
     private int auctionIdCounter = 1;
+
+    public Scanner getScanner() {
+        return this.scanner;
+    }
 
     private String inputName(String prompt) {
         String textInput = "";
