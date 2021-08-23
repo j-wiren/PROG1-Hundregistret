@@ -23,8 +23,8 @@ public class Auction {
         return id;
     }
 
-    public void makeBid(Owner owner, Bid bid) {
-        bids.put(owner, bid);
+    public void makeBid(Bid bid) {
+        bids.put(bid.getOwner(), bid);
     }
 
     public Bid getHighestBid() {

@@ -366,7 +366,7 @@ public class Program {
 
         int bid = inputBid(foundAuction);
 
-        foundAuction.makeBid(foundOwner, new Bid(foundOwner, bid));
+        foundAuction.makeBid(new Bid(foundOwner, bid));
 
         System.out.println("Your bid has been made.");
 
