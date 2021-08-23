@@ -42,14 +42,18 @@ public class Owner {
 	}
 
 	public void removeDog(Dog dog) {
-		Dog[] updatedDogs = new Dog[dogs.length - 1];
-		for (int i = 0, j = 0; i < dogs.length; i++) {
-			if (dogs[i] != dog) {
-				updatedDogs[j] = dogs[i];
-				j++;
+		if (checkIfOwnerOwnsDog(dog)) {
+			Dog[] updatedDogs = new Dog[dogs.length - 1];
+			for (int i = 0, j = 0; i < dogs.length; i++) {
+				if (dogs[i] != dog) {
+					updatedDogs[j] = dogs[i];
+					j++;
+				}
 			}
+			dogs = updatedDogs;
+		} else {
+			return;
 		}
-		dogs = updatedDogs;
 	}
 
 	public void removeAllDogs() {
