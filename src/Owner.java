@@ -17,8 +17,11 @@ public class Owner {
 		return name;
 	}
 
-	public Dog[] getDogs() {
-		Dog[] dogsCopy = dogs;
+	public List<Dog> getDogs() {
+		if (dogs == null) {
+			return null;
+		}
+		List<Dog> dogsCopy = Arrays.asList(dogs);
 		return dogsCopy;
 	}
 

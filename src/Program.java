@@ -357,13 +357,23 @@ public class Program {
         if (foundDog == null) {
             return;
         }
+
         Auction foundAuction = findAuction(foundDog);
         if (foundAuction == null) {
             System.out.println("Error: " + foundDog.getName() + " is not up for auction.");
             return;
         }
 
-        Bid highestBid = foundAuction.getHighestBid();
+        int bid = inputBid(foundAuction);
+
+        foundAuction.makeBid(foundOwner, new Bid(foundOwner, bid));
+
+        System.out.println("Your bid has been made.");
+
+    }
+
+    private int inputBid(Auction auction) {
+        Bid highestBid = auction.getHighestBid();
         int highestBidAmount = 0;
         if (highestBid != null) {
             highestBidAmount = highestBid.getBid();
@@ -375,10 +385,7 @@ public class Program {
                 System.out.println("Error: Your bid is too low.");
             }
         }
-        foundAuction.makeBid(foundOwner, new Bid(foundOwner, bid));
-
-        System.out.println("Your bid has been made.");
-
+        return bid;
     }
 
     public void listBids() {
